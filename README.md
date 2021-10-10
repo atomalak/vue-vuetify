@@ -1,4 +1,4 @@
-# deneme2
+# vue-vuetify
 
 ## Project setup
 ```
