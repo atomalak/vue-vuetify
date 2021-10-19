@@ -7,9 +7,7 @@
       <v-col md="4" sm="3" lg="4" v-for="policy in policies" :key="policy">
         <v-card class="mx-auto" color="#26c6da" dark max-width="400">
           <v-card-title> {{ policy.name }} </v-card-title>
-          <v-card-actions>
-            <v-btn color="red"> Sil </v-btn>
-          </v-card-actions>
+          
         </v-card>
       </v-col>
     </v-row>

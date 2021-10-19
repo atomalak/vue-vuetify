@@ -61,7 +61,7 @@
         <v-alert type="info"> Herhangi Bir Müşteri Kaydı Yoktur </v-alert>
       </v-col>
     </v-row>
-    <v-app-bar> </v-app-bar>
+  
   </v-container>
 </template>
 <script>
