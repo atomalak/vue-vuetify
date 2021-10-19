@@ -80,6 +80,24 @@ export const getCustomers = () => {
     }
 }
 
+export const updateCustomerPolicyStorage = (customerId, policyId, data) => {
+    let customerPolicy = JSON.parse(localStorage.getItem("customerpolicies"));
+    let updatedCustomerPolicy = customerPolicy.map((policy) => {
+        if (policy.customerId == customerId && policy.policyId == policyId) {
+            return {
+                customerId,
+                policyId,
+                ...data
+            }
+        } else {
+            return policy
+        }
+    })
+
+    localStorage.setItem("customerpolicies", JSON.stringify(updatedCustomerPolicy));
+
+}
+
 export const updateCustomerStorage = (id, data) => {
     let customers = JSON.parse(localStorage.getItem("customers"));
     let updatedData = customers.map((customer) => {

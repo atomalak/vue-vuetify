@@ -222,9 +222,13 @@
 </template>
 <script>
 import ShowMessage from "@/components/ShowMessage";
-import { getPolicies, saveCustomerPolicies } from "../storage";
+import {
+  getPolicies,
+  saveCustomerPolicies,
+  updateCustomerPolicyStorage,
+} from "../storage";
 export default {
-  props: ["customerinfo", "policyInfo","updateCustomerId"],
+  props: ["customerinfo", "policyInfo", "updateCustomerId"],
   components: {
     ShowMessage,
   },
@@ -275,7 +279,30 @@ export default {
     this.name = this.customerinfo.name + " " + this.customerinfo.surname;
   },
   methods: {
-    updatePolicy() {},
+    updatePolicy() {
+      let customerPolicy = {
+        policyStartDate: this.date,
+        policyEndDate: this.date2,
+        tanzimDate: this.tanzimDate,
+        crediCardInfo: this.crediCardInfo,
+        referans: this.referans,
+        meeting: this.meeting,
+        priceType: this.priceTypeSelected,
+        plateNumber: this.plateNumber,
+        seriNo: this.seriNo,
+        markamodel: this.markamodel,
+        price: this.price,
+      };
+
+      updateCustomerPolicyStorage(
+        this.updateCustomerId,
+        this.selectionPolicy,
+        customerPolicy
+      );
+      this.dialog = !this.dialog;
+      this.$emit("updateProps");
+      this.$emit("event", "Işleminiz Başarılıyla Gerçekleştirildi");
+    },
     closeModals() {
       this.dialog = !this.dialog;
       this.$emit("updateProps");
@@ -313,6 +340,7 @@ export default {
         plateNumber: this.plateNumber,
         seriNo: this.seriNo,
         markamodel: this.markamodel,
+        price: this.price,
       };
       saveCustomerPolicies(customerPolicy);
       this.dialog = false;
@@ -343,6 +371,7 @@ export default {
         this.plateNumber = value.plateNumber;
         this.seriNo = value.seriNo;
         this.markamodel = value.markamodel;
+        this.price = value.price;
       } else {
         this.selectionPolicy = null;
         this.date = new Date().toISOString().substr(0, 10);
