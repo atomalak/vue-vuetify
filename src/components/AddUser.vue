@@ -2,13 +2,20 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="800px">
       <template v-slot:activator="{ on }">
-        <v-btn outlined color="teal lighten-3" dark v-on="on"
-          >Yeni Müşteri Ekle</v-btn
-        >
+        <v-btn
+          outlined
+          color="teal lighten-3"
+          dark
+          v-on="on"
+          ref="customerModal"
+          >Yeni Müşteri Ekle
+        </v-btn>
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Yeni Müşteri</span>
+          <span class="headline"
+            >{{ pageType == "newrecord" ? "Yeni Müşteri" : "Müşteri Güncelle" }}
+          </span>
         </v-card-title>
         <v-form class="px-3" ref="form">
           <v-card-text>
@@ -44,10 +51,20 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-3" text @click="dialog = !dialog">
-              Kapat</v-btn
+            <v-btn color="blue darken-3" text @click="closeModal">
+              Kapat
+            </v-btn>
+            <v-btn
+              color="red darken"
+              text
+              @click="savecustomer"
+              v-if="pageType == 'newrecord'"
             >
-            <v-btn color="red darken" text @click="savecustomer"> Kaydet</v-btn>
+              Kaydet</v-btn
+            >
+            <v-btn color="red darken" text @click="updateCustomerValue" v-else>
+              Güncelle</v-btn
+            >
           </v-card-actions>
         </v-form>
       </v-card>
@@ -57,6 +74,7 @@
 <script>
 import { calculateCustomerId } from "../storage";
 export default {
+  props: ["pageType", "updateCustomer"],
   data: (vm) => ({
     dialog: false,
     name: "",
@@ -71,10 +89,26 @@ export default {
     ],
   }),
   methods: {
+    closeModal() {
+      this.dialog = !this.dialog;
+      this.$emit("updateProps");
+    },
     checkInputLenght(event) {
       if (this.kkb > 15) {
         event.preventDefault();
       }
+    },
+    updateCustomerValue() {
+      let user = {
+        name: this.name,
+        surname: this.surname,
+        phone: this.phone,
+        tc: this.tc,
+        id: value.id
+        
+      };
+      this.$emit("updateCustomerInfo", user);
+      this.dialog = false;
     },
     savecustomer() {
       let user = {
@@ -86,6 +120,22 @@ export default {
       };
       this.$emit("saveCustomer", user);
       this.dialog = false;
+    },
+  },
+
+  watch: {
+    updateCustomer(value) {
+      if (value !== null) {
+        this.name = value.name;
+        this.surname = value.surname;
+        this.phone = value.phone;
+        this.tc = value.tc;
+      } else {
+        this.name = "";
+        this.surname = "";
+        this.phone = "";
+        this.tc = "";
+      }
     },
   },
 };

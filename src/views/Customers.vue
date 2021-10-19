@@ -1,7 +1,15 @@
 <template>
   <v-container>
     <h1 class="text-center mb-4">Müşteriler</h1>
-    <AddUser @saveCustomer="saveCustomer($event)" />
+    <AddUser
+      @saveCustomer="saveCustomer($event)"
+      @click="pageType = 'newrecord'"
+      :pageType="pageType"
+      :updateCustomer="updateCustomerInfo"
+      @updateProps="updateProps"
+      @updateCustomerInfo="updateCustomerInfo"
+      ref="adduser"
+    />
     <v-row v-if="customers.length > 0">
       <v-col md="4" sm="3" lg="4" v-for="customer in customers" :key="customer">
         <v-card class="mx-auto" color="#26c6da" dark max-width="400">
@@ -23,19 +31,19 @@
                 :customerinfo="customer"
                 :customerPolicies="customerPolicies"
               />
-             
             </v-toolbar>
           </v-card-actions>
-           <v-card-actions>
-            <v-toolbar>
-             <NewCustomerPolicy :customerinfo="customer" />
-             
-            </v-toolbar>
-          </v-card-actions>
-          
           <v-card-actions>
             <v-toolbar>
-              <v-btn color="orange" block>Müşteri Güncelle</v-btn>
+              <NewCustomerPolicy :customerinfo="customer" />
+            </v-toolbar>
+          </v-card-actions>
+
+          <v-card-actions>
+            <v-toolbar>
+              <v-btn color="orange" block @click="updateCustomer(customer)"
+                >Müşteri Güncelle</v-btn
+              >
             </v-toolbar>
           </v-card-actions>
         </v-card>
@@ -62,6 +70,8 @@ export default {
       customers: [],
       copyCustomers: [],
       customerPolicies: [],
+      pageType: "newrecord",
+      updateCustomerInfo: null,
     };
   },
   components: {
@@ -70,6 +80,15 @@ export default {
     CustomerPolicies,
   },
   methods: {
+    updateProps() {
+      this.pageType = "newrecord";
+      this.updateCustomerInfo = null;
+    },
+    updateCustomer(customer) {
+      this.$refs.adduser.$refs.customerModal.$el.click();
+      this.pageType = "updateRecord";
+      this.updateCustomerInfo = customer;
+    },
     saveCustomer(data) {
       if (!data.name) {
         this.$emit("event", "Müşterinin Adını Kontrol Ediniz");
@@ -91,6 +110,8 @@ export default {
       }
 
       this.customers.push(data);
+      this.pageType = "newrecord";
+      this.updateCustomerInfo = null;
       saveCustomer(this.customers);
       this.$emit("event", "Yeni Müşteri Eklendi");
       this.copyCustomers = JSON.parse(JSON.stringify(this.customers));

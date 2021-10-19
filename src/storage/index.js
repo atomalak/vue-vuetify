@@ -80,6 +80,7 @@ export const getCustomers = () => {
     }
 }
 
+
 export const getSpecificPolicy = (policyId) => {
     let policy = getPolicies().find((item) => {
         return item.id == policyId
