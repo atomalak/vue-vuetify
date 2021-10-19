@@ -28,12 +28,16 @@
               <CustomerPolicies
                 :customerinfo="customer"
                 :customerPolicies="customerPolicies"
+                @detailPolicies="detailPolicies"
               />
             </v-toolbar>
           </v-card-actions>
           <v-card-actions>
             <v-toolbar>
-              <NewCustomerPolicy :customerinfo="customer" />
+              <NewCustomerPolicy
+                :customerinfo="customer"
+                ref="newCustomerPolicy"
+              />
             </v-toolbar>
           </v-card-actions>
 
@@ -78,6 +82,9 @@ export default {
     CustomerPolicies,
   },
   methods: {
+    detailPolicies(data) {
+      this.$refs.newCustomerPolicy[0].$refs.opencreatemodal.$el.click();
+    },
     updateProps() {
       this.pageType = "newrecord";
       this.updateCustomerInfo = null;

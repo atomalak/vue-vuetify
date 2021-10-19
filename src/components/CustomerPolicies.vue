@@ -2,14 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn
-          color="red"
-          dark
-          v-on="on"
-          block
-         
-          >Poliçe Bilgileri</v-btn
-        >
+        <v-btn color="red" dark v-on="on" block>Poliçe Bilgileri</v-btn>
       </template>
       <v-card class="mx-auto" width="600">
         <v-list three-line>
@@ -47,6 +40,13 @@
                     @click="removePolicies(customerPolicies.policyId)"
                     >Sil</v-btn
                   >
+                  <v-btn
+                    color="blue"
+                    dark
+                    @click="detailPolicies(customerPolicies)"
+                    class="ml-3"
+                    >Detay</v-btn
+                  >
                 </v-list-item-title>
                 <v-list-item-subtitle class="text--primary">
                   Poliçe Başlangıç Tarihi: {{ customerPolicies.policyStartDate
@@ -75,8 +75,11 @@ export default {
       removePolicyFromCustomer(id, this.customerinfo.id);
       this.customerPolicies = getCustomerPolicies(this.customerinfo.id);
     },
+    detailPolicies(customerPolicies) {
+      this.$emit("detailPolicies", customerPolicies);
+    },
   },
- 
+
   watch: {
     dialog(value) {
       if (value) {

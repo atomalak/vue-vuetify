@@ -1,13 +1,15 @@
 <template>
-  <v-row justify="center" >
+  <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <ShowMessage :message="message" :status="status" />
       <template v-slot:activator="{ on }">
-        <v-btn color="blue" block dark v-on="on">Yeni Poliçe Ekle</v-btn>
+        <v-btn color="blue" block dark v-on="on" ref="opencreatemodal"
+          >Yeni Poliçe Ekle</v-btn
+        >
       </template>
       <v-card>
         <v-card-title>
-          <span>{{ name }} Poliçe Tanımı</span>
+          <span>Poliçe Tanımı</span>
         </v-card-title>
         <v-form class="px-3" ref="form">
           <v-card-text>
@@ -87,6 +89,16 @@
               </v-col>
             </v-row>
             <v-row>
+              <v-col class="d-flex" cols="12" sm="12" md="12" lg="12">
+                <v-select
+                  :items="priceType"
+                  label="Ödeme Şekli"
+                  v-model="priceTypeSelected"
+                >
+                </v-select>
+              </v-col>
+            </v-row>
+            <v-row v-if="priceTypeSelected == 'kkb'">
               <v-col cols="12" sm="12" md="12" lg="12">
                 <v-textarea
                   label="Kredi Kartı Bilgileri"
@@ -99,16 +111,7 @@
                 <v-textarea label="Referans" v-model="referans"></v-textarea>
               </v-col>
             </v-row>
-            <v-row>
-              <v-col class="d-flex" cols="12" sm="12" md="12" lg="12">
-                <v-select
-                  :items="priceType"
-                  label="Ödeme Şekli"
-                  v-model="priceTypeSelected"
-                >
-                </v-select>
-              </v-col>
-            </v-row>
+
             <v-row>
               <v-col cols="12">
                 <v-menu
