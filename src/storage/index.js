@@ -13,10 +13,10 @@ export const getCustomerPolicies = (customerid) => {
     return [];
 }
 
-export const removePolicyFromCustomer = (id,customerid) => {
+export const removePolicyFromCustomer = (id, customerid) => {
     let customerpolicies = JSON.parse(localStorage.getItem("customerpolicies"));
     customerpolicies = customerpolicies.filter((item) => {
-        return item.policyId !== id && item.customerId==customerid
+        return item.policyId !== id && item.customerId == customerid
     })
     localStorage.setItem("customerpolicies", JSON.stringify(customerpolicies));
 
@@ -78,6 +78,23 @@ export const getCustomers = () => {
     } else {
         return JSON.parse(localStorage.getItem("customers"));
     }
+}
+
+export const updateCustomerStorage = (id, data) => {
+    let customers = JSON.parse(localStorage.getItem("customers"));
+    let updatedData = customers.map((customer) => {
+        if (customer.id == id) {
+            return {
+                id,
+                ...data
+            }
+        } else {
+            return customer
+        }
+
+
+    })
+    localStorage.setItem("customers", JSON.stringify(updatedData));
 }
 
 

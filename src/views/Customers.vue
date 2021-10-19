@@ -7,7 +7,7 @@
       :pageType="pageType"
       :updateCustomer="updateCustomerInfo"
       @updateProps="updateProps"
-      @updateCustomerInfo="updateCustomerInfo"
+      @updateCustomerInfoEvent="updateCustomerInfoEvent"
       ref="adduser"
     />
     <v-row v-if="customers.length > 0">
@@ -15,15 +15,13 @@
         <v-card class="mx-auto" color="#26c6da" dark max-width="400">
           <v-card-title co> Müşteri Bilgisi </v-card-title>
           <v-divider></v-divider>
-          <v-card-subtitle> Müşteri Adı: {{ customer.name }} </v-card-subtitle>
+          <v-card-title> Müşteri Adı: {{ customer.name }} </v-card-title>
           <v-divider></v-divider>
-          <v-card-subtitle>
-            Müşteri Soyadı: {{ customer.surname }}
-          </v-card-subtitle>
+          <v-card-title> Müşteri Soyadı: {{ customer.surname }} </v-card-title>
           <v-divider></v-divider>
-          <v-card-subtitle>
+          <v-card-title>
             <b>Telefon Bilgisi:</b> {{ customer.phone }}
-          </v-card-subtitle>
+          </v-card-title>
           <v-divider></v-divider>
           <v-card-actions>
             <v-toolbar>
@@ -62,7 +60,7 @@
 import AddUser from "@/components/AddUser";
 import NewCustomerPolicy from "@/components/NewCustomerPolicy";
 import CustomerPolicies from "@/components/CustomerPolicies";
-import { saveCustomer, getCustomers, getCustomerPolicies } from "../storage";
+import { saveCustomer, getCustomers, updateCustomerStorage } from "../storage";
 export default {
   props: ["searchValue", "newPolicyAdded"],
   data() {
@@ -88,6 +86,32 @@ export default {
       this.$refs.adduser.$refs.customerModal.$el.click();
       this.pageType = "updateRecord";
       this.updateCustomerInfo = customer;
+    },
+    updateCustomerInfoEvent(data) {
+      if (!data.name) {
+        this.$emit("event", "Müşterinin Adını Kontrol Ediniz");
+        return;
+      }
+
+      if (!data.surname) {
+        this.$emit("event", "Müşterinin Soyadını Kontrol Ediniz");
+        return;
+      }
+      if (!data.phone || data.phone.length > 11) {
+        this.$emit("event", "Girilen Telefon Numarasını Kontrol Ediniz");
+        return;
+      }
+
+      if (!data.tc || data.tc.length > 11) {
+        this.$emit("event", "Girilen TC kimlik numarasınız Kontrol Ediniz");
+        return;
+      }
+      this.pageType = "newrecord";
+      this.updateCustomerInfo = null;
+      this.$emit("event", "Müşteri Başarılı Bir Şekilde Güncellendi");
+      updateCustomerStorage(data.id, data);
+      this.customers = getCustomers();
+      this.copyCustomers = JSON.parse(JSON.stringify(this.customers));
     },
     saveCustomer(data) {
       if (!data.name) {

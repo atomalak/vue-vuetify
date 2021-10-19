@@ -104,10 +104,10 @@ export default {
         surname: this.surname,
         phone: this.phone,
         tc: this.tc,
-        id: value.id
+        id: this.updateCustomer.id
         
       };
-      this.$emit("updateCustomerInfo", user);
+      this.$emit("updateCustomerInfoEvent", user);
       this.dialog = false;
     },
     savecustomer() {
