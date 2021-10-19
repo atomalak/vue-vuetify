@@ -224,7 +224,7 @@
 import ShowMessage from "@/components/ShowMessage";
 import { getPolicies, saveCustomerPolicies } from "../storage";
 export default {
-  props: ["customerinfo", "policyInfo"],
+  props: ["customerinfo", "policyInfo","updateCustomerId"],
   components: {
     ShowMessage,
   },

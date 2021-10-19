@@ -72,11 +72,19 @@ export default {
   }),
   methods: {
     removePolicies(id) {
-      removePolicyFromCustomer(id, this.customerinfo.id);
-      this.customerPolicies = getCustomerPolicies(this.customerinfo.id);
+      if (
+        confirm("Poliçe Müşteri Üzerinden Silinecektir. Onaylıyormusunuz ?")
+      ) {
+        removePolicyFromCustomer(id, this.customerinfo.id);
+        this.customerPolicies = getCustomerPolicies(this.customerinfo.id);
+      }
     },
     detailPolicies(customerPolicies) {
-      this.$emit("detailPolicies", customerPolicies);
+      let info = {
+        policyInfo: customerPolicies,
+        id: this.customerinfo.id,
+      };
+      this.$emit("detailPolicies", info);
     },
   },
 

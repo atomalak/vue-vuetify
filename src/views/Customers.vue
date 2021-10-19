@@ -13,7 +13,7 @@
     <v-row v-if="customers.length > 0">
       <v-col md="4" sm="3" lg="4" v-for="customer in customers" :key="customer">
         <v-card class="mx-auto" color="#26c6da" dark max-width="400">
-          <v-card-title co> Müşteri Bilgisi </v-card-title>
+          <v-card-title> Müşteri Bilgisi </v-card-title>
           <v-divider></v-divider>
           <v-card-title> Müşteri Adı: {{ customer.name }} </v-card-title>
           <v-divider></v-divider>
@@ -39,6 +39,7 @@
                 :policyInfo="policyInfo"
                 ref="newCustomerPolicy"
                 @updateProps="updateProps"
+                :updateCustomerId="updateCustomerId"
               />
             </v-toolbar>
           </v-card-actions>
@@ -77,6 +78,7 @@ export default {
       pageType: "newrecord",
       updateCustomerInfo: null,
       policyInfo: null,
+      updateCustomerId: null,
     };
   },
   components: {
@@ -87,12 +89,14 @@ export default {
   methods: {
     detailPolicies(data) {
       this.$refs.newCustomerPolicy[0].$refs.opencreatemodal.$el.click();
-      this.policyInfo = data;
+      this.policyInfo = data.policyInfo;
+      this.updateCustomerId = data.id;
     },
     updateProps() {
       this.pageType = "newrecord";
       this.updateCustomerInfo = null;
       this.policyInfo = null;
+      this.updateCustomerId = null;
     },
     updateCustomer(customer) {
       this.$refs.adduser.$refs.customerModal.$el.click();
