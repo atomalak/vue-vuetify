@@ -85,6 +85,7 @@ export default {
         id: this.customerinfo.id,
       };
       this.$emit("detailPolicies", info);
+      this.dialog=!this.dialog;
     },
   },
 

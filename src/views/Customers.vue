@@ -29,6 +29,7 @@
                 :customerinfo="customer"
                 :customerPolicies="customerPolicies"
                 @detailPolicies="detailPolicies"
+                ref="customerPolicies"
               />
             </v-toolbar>
           </v-card-actions>
@@ -67,7 +68,7 @@
 import AddUser from "@/components/AddUser";
 import NewCustomerPolicy from "@/components/NewCustomerPolicy";
 import CustomerPolicies from "@/components/CustomerPolicies";
-import { saveCustomer, getCustomers, updateCustomerStorage } from "../storage";
+import { saveCustomer, getCustomers, updateCustomerStorage,getCustomerPolicies } from "../storage";
 export default {
   props: ["searchValue", "newPolicyAdded"],
   data() {
@@ -97,6 +98,7 @@ export default {
       this.updateCustomerInfo = null;
       this.policyInfo = null;
       this.updateCustomerId = null;
+      
     },
     updateCustomer(customer) {
       this.$refs.adduser.$refs.customerModal.$el.click();

@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav v-if="showNavbar">
     <v-app-bar color="red" dark app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
       <v-toolbar-title class="text-uppercase">
@@ -19,7 +19,7 @@
         </v-col>
       </v-row>
 
-      <v-btn text style="display:none">
+      <v-btn text style="display: none">
         <span>Çıkış</span>
         <v-icon right>exit_to_app</v-icon>
       </v-btn>
@@ -61,6 +61,7 @@ export default {
           route: "/policies",
         },
       ],
+      showNavbar: false,
     };
   },
   methods: {
@@ -72,6 +73,18 @@ export default {
         this.$emit("event", "En Az 3 Harf Girmelisiniz");
       }
     },
+
+    checkSystemLogin() {
+      let clear = setInterval(() => {
+        if (sessionStorage.getItem("loginInfo") !== null) {
+          clearInterval(clear);
+        }
+      }, 500);
+    },
+  },
+
+  mounted() {
+    this.checkSystemLogin();
   },
 };
 </script>
