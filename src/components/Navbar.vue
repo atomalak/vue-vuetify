@@ -77,6 +77,7 @@ export default {
     checkSystemLogin() {
       let clear = setInterval(() => {
         if (sessionStorage.getItem("loginInfo") !== null) {
+          this.showNavbar=true;
           clearInterval(clear);
         }
       }, 500);

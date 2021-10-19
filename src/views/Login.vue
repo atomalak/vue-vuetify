@@ -36,7 +36,7 @@ export default {
         return;
       }
       if (this.password.length == 0) {
-        alert("Kullanıcını Adınızı Kontrol Ediniz");
+        alert("Şifrenizi Kontrol Ediniz");
         return;
       }
 
@@ -44,6 +44,8 @@ export default {
         this.name == "ufukisik@gmail.com" &&
         this.password == "ufukseyda*-123"
       ) {
+        sessionStorage.setItem("loginInfo", "true");
+        this.$router.push("/");
       } else {
         alert("Bilgilerinizi Kontrol Ederek Tekrar Deneyiniz");
       }
