@@ -18,12 +18,24 @@
           </v-card-subtitle>
           <v-divider></v-divider>
           <v-card-actions>
-            <v-toolbar dense>
+            <v-toolbar>
               <CustomerPolicies
                 :customerinfo="customer"
                 :customerPolicies="customerPolicies"
               />
-              <NewCustomerPolicy :customerinfo="customer" />
+             
+            </v-toolbar>
+          </v-card-actions>
+           <v-card-actions>
+            <v-toolbar>
+             <NewCustomerPolicy :customerinfo="customer" />
+             
+            </v-toolbar>
+          </v-card-actions>
+          
+          <v-card-actions>
+            <v-toolbar>
+              <v-btn color="orange" block>Müşteri Güncelle</v-btn>
             </v-toolbar>
           </v-card-actions>
         </v-card>

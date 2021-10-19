@@ -6,8 +6,9 @@
           color="red"
           dark
           v-on="on"
+          block
          
-          >Poliçe</v-btn
+          >Poliçe Bilgileri</v-btn
         >
       </template>
       <v-card class="mx-auto" width="600">

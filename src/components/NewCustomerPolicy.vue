@@ -1,9 +1,9 @@
 <template>
-  <v-row justify="center" class="mb-3">
+  <v-row justify="center" >
     <v-dialog v-model="dialog" persistent max-width="600px">
       <ShowMessage :message="message" :status="status" />
       <template v-slot:activator="{ on }">
-        <v-btn color="blue" dark v-on="on">Poliçe Tanımı</v-btn>
+        <v-btn color="blue" block dark v-on="on">Yeni Poliçe Ekle</v-btn>
       </template>
       <v-card>
         <v-card-title>
