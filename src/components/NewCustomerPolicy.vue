@@ -9,19 +9,10 @@
       </template>
       <v-card>
         <v-card-title>
-          <span>Poliçe Tanımı</span>
+          <span> {{ policyInfo ? "Poliçe Güncelleme" : "Poliçe Tanımı" }}</span>
         </v-card-title>
         <v-form class="px-3" ref="form">
           <v-card-text>
-            <v-row>
-              <v-col cols="12" sm="12" md="12">
-                <v-text-field
-                  label="Müşteri Adı"
-                  v-model="name"
-                  disabled
-                ></v-text-field>
-              </v-col>
-            </v-row>
             <v-row>
               <v-col class="d-flex" cols="12" sm="12" md="12" lg="12">
                 <v-select
@@ -211,10 +202,18 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-3" text @click="dialog = !dialog">
+            <v-btn color="blue darken-3" text @click="closeModals">
               Kapat</v-btn
             >
-            <v-btn color="red darken" text @click="save"> Kaydet</v-btn>
+            <v-btn
+              color="orange darken"
+              text
+              @click="updatePolicy"
+              v-if="policyInfo"
+            >
+              Güncelle</v-btn
+            >
+            <v-btn color="red darken" text @click="save" v-else> Kaydet</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -225,7 +224,7 @@
 import ShowMessage from "@/components/ShowMessage";
 import { getPolicies, saveCustomerPolicies } from "../storage";
 export default {
-  props: ["customerinfo"],
+  props: ["customerinfo", "policyInfo"],
   components: {
     ShowMessage,
   },
@@ -276,6 +275,11 @@ export default {
     this.name = this.customerinfo.name + " " + this.customerinfo.surname;
   },
   methods: {
+    updatePolicy() {},
+    closeModals() {
+      this.dialog = !this.dialog;
+      this.$emit("updateProps");
+    },
     formatDate(date) {
       if (!date) return null;
       const [year, month, day] = date.split("-");
@@ -325,6 +329,34 @@ export default {
     },
     tanzimDate() {
       this.tanzimDateFormatted = this.formatDate(this.tanzimDate);
+    },
+    policyInfo(value) {
+      if (value !== null) {
+        this.selectionPolicy = value.policyId;
+        this.date = value.policyStartDate;
+        this.date2 = value.policyEndDate;
+        this.tanzimDate = value.tanzimDate;
+        this.crediCardInfo = value.crediCardInfo;
+        this.referans = value.referans;
+        this.meeting = value.meeting;
+        this.priceTypeSelected = value.priceType;
+        this.plateNumber = value.plateNumber;
+        this.seriNo = value.seriNo;
+        this.markamodel = value.markamodel;
+      } else {
+        this.selectionPolicy = null;
+        this.date = new Date().toISOString().substr(0, 10);
+        this.date2 = new Date().toISOString().substr(0, 10);
+        this.tanzimDate = new Date().toISOString().substr(0, 10);
+        this.crediCardInfo = "";
+        this.referans = "";
+        this.meeting = "";
+        this.price = "";
+        this.priceTypeSelected = "";
+        this.plateNumber = "";
+        this.seriNo = "";
+        this.markamodel = "";
+      }
     },
   },
 };

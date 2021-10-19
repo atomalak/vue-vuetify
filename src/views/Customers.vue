@@ -36,7 +36,9 @@
             <v-toolbar>
               <NewCustomerPolicy
                 :customerinfo="customer"
+                :policyInfo="policyInfo"
                 ref="newCustomerPolicy"
+                @updateProps="updateProps"
               />
             </v-toolbar>
           </v-card-actions>
@@ -74,6 +76,7 @@ export default {
       customerPolicies: [],
       pageType: "newrecord",
       updateCustomerInfo: null,
+      policyInfo: null,
     };
   },
   components: {
@@ -84,10 +87,12 @@ export default {
   methods: {
     detailPolicies(data) {
       this.$refs.newCustomerPolicy[0].$refs.opencreatemodal.$el.click();
+      this.policyInfo = data;
     },
     updateProps() {
       this.pageType = "newrecord";
       this.updateCustomerInfo = null;
+      this.policyInfo = null;
     },
     updateCustomer(customer) {
       this.$refs.adduser.$refs.customerModal.$el.click();
