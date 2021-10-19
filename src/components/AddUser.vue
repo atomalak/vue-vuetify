@@ -24,13 +24,19 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="12" sm="12" md="12">
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field
-                  v-model="kkb"
-                  maxlength="16"
-                  :rules="rules"
-                  label="Kredi Kartı Bilgileri"
-                  counter
+                  v-model="phone"
+                  maxlength="11"
+                  label="Müşteri Telefon Bilgisi"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field
+                  v-model="tc"
+                  maxlength="11"
+                  label="Tc Numarası"
                   type="number"
                 ></v-text-field>
               </v-col>
@@ -56,6 +62,8 @@ export default {
     name: "",
     surname: "",
     kkb: "",
+    phone: "",
+    tc: "",
     rules: [
       (v) =>
         v.length <= 16 ||
@@ -72,13 +80,13 @@ export default {
       let user = {
         name: this.name,
         surname: this.surname,
-        kkb: this.kkb,
+        phone: this.phone,
+        tc: this.tc,
         id: calculateCustomerId(),
       };
       this.$emit("saveCustomer", user);
       this.dialog = false;
     },
   },
-  
 };
 </script>

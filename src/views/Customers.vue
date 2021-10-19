@@ -14,12 +14,15 @@
           </v-card-subtitle>
           <v-divider></v-divider>
           <v-card-subtitle>
-            Kredi Kartı Bilgisi: {{ customer.kkb }}
+            <b>Telefon Bilgisi:</b> {{ customer.phone }}
           </v-card-subtitle>
           <v-divider></v-divider>
           <v-card-actions>
             <v-toolbar dense>
-              <CustomerPolicies :customerinfo="customer" :customerPolicies="customerPolicies" />
+              <CustomerPolicies
+                :customerinfo="customer"
+                :customerPolicies="customerPolicies"
+              />
               <NewCustomerPolicy :customerinfo="customer" />
             </v-toolbar>
           </v-card-actions>
@@ -39,14 +42,14 @@
 import AddUser from "@/components/AddUser";
 import NewCustomerPolicy from "@/components/NewCustomerPolicy";
 import CustomerPolicies from "@/components/CustomerPolicies";
-import { saveCustomer, getCustomers,getCustomerPolicies } from "../storage";
+import { saveCustomer, getCustomers, getCustomerPolicies } from "../storage";
 export default {
-  props: ["searchValue","newPolicyAdded"],
+  props: ["searchValue", "newPolicyAdded"],
   data() {
     return {
       customers: [],
       copyCustomers: [],
-      customerPolicies:[]
+      customerPolicies: [],
     };
   },
   components: {
@@ -65,8 +68,13 @@ export default {
         this.$emit("event", "Müşterinin Soyadını Kontrol Ediniz");
         return;
       }
-      if (!data.kkb.length || data.kkb.length > 16) {
-        this.$emit("event", "Girilen Kredi Kartı Bilgisini Kontrol Ediniz.");
+      if (!data.phone || data.phone.length > 11) {
+        this.$emit("event", "Girilen Telefon Numarasını Kontrol Ediniz");
+        return;
+      }
+
+      if (!data.tc || data.tc.length > 11) {
+        this.$emit("event", "Girilen TC kimlik numarasınız Kontrol Ediniz");
         return;
       }
 
@@ -98,11 +106,10 @@ export default {
         this.customers = JSON.parse(JSON.stringify(this.copyCustomers));
       }
     },
-    newPolicyAdded(val){
-      if(val){
-
+    newPolicyAdded(val) {
+      if (val) {
       }
-    }
+    },
   },
 };
 </script>

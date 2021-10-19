@@ -30,6 +30,85 @@
                 </v-select>
               </v-col>
             </v-row>
+            <v-row
+              v-if="
+                selectionPolicy &&
+                (selectionPolicy == 2 || selectionPolicy == 3)
+              "
+            >
+              <v-col cols="12" sm="12" md="12" lg="12">
+                <v-text-field
+                  label="Plaka"
+                  v-model="plateNumber"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row
+              v-if="
+                selectionPolicy &&
+                (selectionPolicy == 2 || selectionPolicy == 3)
+              "
+            >
+              <v-col cols="12" sm="12" md="12" lg="12">
+                <v-text-field
+                  label="Belge Seri No"
+                  v-model="seriNo"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row
+              v-if="
+                selectionPolicy &&
+                (selectionPolicy == 2 || selectionPolicy == 3)
+              "
+            >
+              <v-col cols="12" sm="12" md="12" lg="12">
+                <v-text-field
+                  label="Araç Marka Model"
+                  v-model="markamodel"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="12" md="12" lg="12">
+                <v-textarea
+                  label="Son Görüşme Notu"
+                  v-model="meeting"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="12" md="12" lg="12">
+                <v-text-field
+                  label="Sigorta Fiyatı"
+                  v-model="price"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="12" md="12" lg="12">
+                <v-textarea
+                  label="Kredi Kartı Bilgileri"
+                  v-model="crediCardInfo"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="12" md="12" lg="12">
+                <v-textarea label="Referans" v-model="referans"></v-textarea>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="d-flex" cols="12" sm="12" md="12" lg="12">
+                <v-select
+                  :items="priceType"
+                  label="Ödeme Şekli"
+                  v-model="priceTypeSelected"
+                >
+                </v-select>
+              </v-col>
+            </v-row>
             <v-row>
               <v-col cols="12">
                 <v-menu
@@ -57,13 +136,6 @@
                     no-title
                     @input="menu1 = false"
                     full-width
-                    :min="
-                      new Date(
-                        Date.now() - new Date().getTimezoneOffset() * 60000
-                      )
-                        .toISOString()
-                        .substr(0, 10)
-                    "
                     fullscreen
                   ></v-date-picker>
                 </v-menu>
@@ -96,13 +168,38 @@
                     no-title
                     @input="menu2 = false"
                     full-width
-                    :min="
-                      new Date(
-                        Date.now() - new Date().getTimezoneOffset() * 60000
-                      )
-                        .toISOString()
-                        .substr(0, 10)
-                    "
+                    fullscreen
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-menu
+                  ref="menu1"
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="200px"
+                  min-width="200px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="tanzimDateFormatted"
+                      label="Tanzim Tarihi"
+                      hint="DD/MM/YYYY"
+                      prepend-icon="event"
+                      @blur="tanzimDate = parseDate(tanzimDateFormatted)"
+                      v-on="on"
+                    >
+                    </v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="tanzimDate"
+                    no-title
+                    @input="menu2 = false"
+                    full-width
                     fullscreen
                   ></v-date-picker>
                 </v-menu>
@@ -141,6 +238,30 @@ export default {
     selectionPolicy: null,
     message: "",
     status: false,
+    plateNumber: "",
+    seriNo: "",
+    markamodel: "",
+    tanzimDate: new Date().toISOString().substr(0, 10),
+    tanzimDateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+    price: "",
+    priceTypeSelected: "",
+    priceType: [
+      {
+        text: "Kredi Kartı",
+        value: "kkb",
+      },
+      {
+        text: "Havale",
+        value: "hav",
+      },
+      {
+        text: "Nakit",
+        value: "cash",
+      },
+    ],
+    crediCardInfo: "",
+    referans: "",
+    meeting: "",
   }),
   mounted() {
     getPolicies().map((policy) => {
@@ -177,6 +298,14 @@ export default {
         policyId: this.selectionPolicy,
         policyStartDate: this.date,
         policyEndDate: this.date2,
+        tanzimDate: this.tanzimDate,
+        crediCardInfo: this.crediCardInfo,
+        referans: this.referans,
+        meeting: this.meeting,
+        priceType: this.priceTypeSelected,
+        plateNumber: this.plateNumber,
+        seriNo: this.seriNo,
+        markamodel: this.markamodel,
       };
       saveCustomerPolicies(customerPolicy);
       this.dialog = false;
@@ -190,6 +319,9 @@ export default {
     },
     date2() {
       this.dateformatted2 = this.formatDate(this.date2);
+    },
+    tanzimDate() {
+      this.tanzimDateFormatted = this.formatDate(this.tanzimDate);
     },
   },
 };
